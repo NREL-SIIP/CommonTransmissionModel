@@ -1,0 +1,275 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Generators API",
+    "description" : "Manage generators in the system.",
+    "contact" : {
+      "email" : "daniel.thom@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/test5228/Generators/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "Secured Admin-only calls"
+  }, {
+    "name" : "developers",
+    "description" : "Operations available to regular developers"
+  } ],
+  "paths" : {
+    "/components/generators" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "lists generators",
+        "description" : "By passing in the appropriate options, you can search for\navailable generators in the system\n",
+        "operationId" : "listGenerators",
+        "parameters" : [ {
+          "name" : "searchString",
+          "in" : "query",
+          "description" : "pass an optional search string for looking up generators",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "skip",
+          "in" : "query",
+          "description" : "number of records to skip for pagination",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "maximum number of records to return",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 50,
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Generator"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "admins" ],
+        "summary" : "adds a generator",
+        "description" : "Adds a generator to the system",
+        "operationId" : "addGenerator",
+        "requestBody" : {
+          "description" : "Generator to add",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Generator"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "generator created"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "409" : {
+            "description" : "an existing generator already exists"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Generator" : {
+        "required" : [ "bus", "pg", "qg" ],
+        "type" : "object",
+        "properties" : {
+          "bus" : {
+            "type" : "integer",
+            "description" : "connecting bus id",
+            "example" : 1
+          },
+          "pg" : {
+            "type" : "number",
+            "description" : "active/real power generation output",
+            "example" : 1.2
+          },
+          "qg" : {
+            "type" : "number",
+            "description" : "reactive/imaginary power generation output",
+            "example" : 1.1
+          },
+          "pg_lb" : {
+            "type" : "number",
+            "description" : "minimum active power generation",
+            "example" : 1
+          },
+          "pg_ub" : {
+            "type" : "number",
+            "description" : "maximum active power generation",
+            "example" : 2
+          },
+          "qg_lb" : {
+            "type" : "number",
+            "description" : "minimum active power generation",
+            "example" : 0
+          },
+          "qg_ub" : {
+            "type" : "number",
+            "description" : "maximum reactive power generation",
+            "example" : 0
+          },
+          "service_on" : {
+            "type" : "boolean",
+            "description" : "in service",
+            "example" : 1
+          },
+          "up_time" : {
+            "type" : "number",
+            "description" : "time up previously",
+            "example" : 1.1
+          },
+          "down_time" : {
+            "type" : "number",
+            "description" : "time down previously",
+            "example" : 1.1
+          },
+          "pg_0" : {
+            "type" : "number",
+            "description" : "previous active power output",
+            "example" : 1
+          },
+          "cost_pg_model" : {
+            "type" : "integer",
+            "description" : "cost model type (1=pwl, 2=polynomial)",
+            "example" : 1
+          },
+          "cost_pg_parameters" : {
+            "type" : "array",
+            "description" : "either points for a pwl cost or polynomial coeffents (from lowest degree first)",
+            "example" : [ 1.1 ],
+            "items" : {
+              "type" : "number"
+            }
+          },
+          "cost_start_hot" : {
+            "type" : "number",
+            "description" : "cost in dollars of starting a unit",
+            "example" : 1
+          },
+          "cost_start_warm" : {
+            "type" : "number",
+            "description" : "cost in dollars of starting a unit",
+            "example" : 1
+          },
+          "cost_start_cold" : {
+            "type" : "number",
+            "description" : "cost in dollars of starting a unit",
+            "example" : 1
+          },
+          "time_start_hot" : {
+            "type" : "number",
+            "description" : "threshold of time (est. 9h)",
+            "example" : 1
+          },
+          "time_start_warm" : {
+            "type" : "number",
+            "description" : "threshold of time (est. 9-16h)",
+            "example" : 1
+          },
+          "time_start_cold" : {
+            "type" : "number",
+            "description" : "threshold of time (est. 16h+)",
+            "example" : 1
+          },
+          "max_run" : {
+            "type" : "number",
+            "description" : "unit of time (hours)",
+            "example" : 0
+          },
+          "min_run" : {
+            "type" : "number",
+            "description" : "unit of time (hours)",
+            "example" : 0
+          },
+          "min_down" : {
+            "type" : "number",
+            "description" : "unit of time (hours)",
+            "example" : 0
+          },
+          "pgd_ub" : {
+            "type" : "number",
+            "description" : "maximum active power increase per hour",
+            "example" : 1.1
+          },
+          "pgd_lb" : {
+            "type" : "number",
+            "description" : "maximum active power increase per hour",
+            "example" : 1.1
+          },
+          "must_run" : {
+            "type" : "integer",
+            "description" : "enum",
+            "example" : 1
+          },
+          "fuel_type" : {
+            "type" : "integer",
+            "description" : "fuel type",
+            "example" : 1
+          },
+          "reserve_agc" : {
+            "type" : "boolean",
+            "description" : "1/0",
+            "example" : 1
+          },
+          "reserve_agc_pg_ub" : {
+            "type" : "number",
+            "description" : "1/0",
+            "example" : 0
+          },
+          "reserve_agc_pg_lb" : {
+            "type" : "number",
+            "description" : "1/0",
+            "example" : 0
+          }
+        }
+      }
+    }
+  }
+}
