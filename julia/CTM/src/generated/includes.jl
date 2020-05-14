@@ -1,5 +1,5 @@
-include("Generator.jl")
 include("Bus.jl")
+include("Generator.jl")
 
 export get_area
 export get_base_kv
@@ -11,10 +11,12 @@ export get_cost_start_hot
 export get_cost_start_warm
 export get_down_time
 export get_fuel_type
+export get_index
 export get_max_run
 export get_min_down
 export get_min_run
 export get_must_run
+export get_name
 export get_pg
 export get_pg_0
 export get_pg_lb
@@ -28,6 +30,7 @@ export get_reserve_agc
 export get_reserve_agc_pg_lb
 export get_reserve_agc_pg_ub
 export get_service_on
+export get_status
 export get_time_start_cold
 export get_time_start_hot
 export get_time_start_warm

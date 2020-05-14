@@ -117,9 +117,24 @@
   "components" : {
     "schemas" : {
       "Bus" : {
-        "required" : [ "base_kv", "va", "vm" ],
+        "required" : [ "base_kv", "index", "source_id", "status", "va", "vm" ],
         "type" : "object",
         "properties" : {
+          "index" : {
+            "type" : "integer",
+            "description" : "a unique identifier for components",
+            "example" : 1
+          },
+          "status" : {
+            "type" : "integer",
+            "description" : "a 0/1 value indicating if the component should be omitted or not (0 => omitted)",
+            "example" : 1
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "a flexible name for components, non required to be unique",
+            "example" : "1"
+          },
           "base_kv" : {
             "type" : "number",
             "description" : "base voltage",

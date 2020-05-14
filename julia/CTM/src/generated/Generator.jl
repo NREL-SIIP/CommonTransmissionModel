@@ -8,9 +8,11 @@ This file is auto-generated. Do not edit.
         pgd_ub::Float64
         bus::Int
         pgd_lb::Float64
+        name::String
         max_run::Float64
         qg::Float64
         reserve_agc::Bool
+        status::Int
         pg_0::Float64
         down_time::Float64
         cost_start_warm::Float64
@@ -25,6 +27,7 @@ This file is auto-generated. Do not edit.
         cost_start_hot::Float64
         pg_lb::Float64
         cost_start_cold::Float64
+        index::Int
         must_run::Int
         pg_ub::Float64
         min_run::Float64
@@ -42,9 +45,11 @@ This file is auto-generated. Do not edit.
 - `pgd_ub::Float64`: maximum active power increase per hour
 - `bus::Int`: connecting bus id
 - `pgd_lb::Float64`: maximum active power increase per hour
+- `name::String`: a flexible name for components, non required to be unique
 - `max_run::Float64`: unit of time (hours)
 - `qg::Float64`: reactive/imaginary power generation output
 - `reserve_agc::Bool`: 1/0
+- `status::Int`: a 0/1 value indicating if the component should be omitted or not (0 => omitted)
 - `pg_0::Float64`: previous active power output
 - `down_time::Float64`: time down previously
 - `cost_start_warm::Float64`: cost in dollars of starting a unit
@@ -59,6 +64,7 @@ This file is auto-generated. Do not edit.
 - `cost_start_hot::Float64`: cost in dollars of starting a unit
 - `pg_lb::Float64`: minimum active power generation
 - `cost_start_cold::Float64`: cost in dollars of starting a unit
+- `index::Int`: a unique identifier for components
 - `must_run::Int`: enum
 - `pg_ub::Float64`: maximum active power generation
 - `min_run::Float64`: unit of time (hours)
@@ -78,12 +84,16 @@ mutable struct Generator
     bus::Int
     "maximum active power increase per hour"
     pgd_lb::Float64
+    "a flexible name for components, non required to be unique"
+    name::String
     "unit of time (hours)"
     max_run::Float64
     "reactive/imaginary power generation output"
     qg::Float64
     "1/0"
     reserve_agc::Bool
+    "a 0/1 value indicating if the component should be omitted or not (0 => omitted)"
+    status::Int
     "previous active power output"
     pg_0::Float64
     "time down previously"
@@ -112,6 +122,8 @@ mutable struct Generator
     pg_lb::Float64
     "cost in dollars of starting a unit"
     cost_start_cold::Float64
+    "a unique identifier for components"
+    index::Int
     "enum"
     must_run::Int
     "maximum active power generation"
@@ -129,8 +141,8 @@ mutable struct Generator
 end
 
 
-function Generator(; service_on, pg, pgd_ub, bus, pgd_lb, max_run, qg, reserve_agc, pg_0, down_time, cost_start_warm, reserve_agc_pg_ub, cost_pg_model, time_start_cold, qg_ub, reserve_agc_pg_lb, cost_pg_parameters, fuel_type, qg_lb, cost_start_hot, pg_lb, cost_start_cold, must_run, pg_ub, min_run, time_start_hot, up_time, time_start_warm, min_down, )
-    Generator(service_on, pg, pgd_ub, bus, pgd_lb, max_run, qg, reserve_agc, pg_0, down_time, cost_start_warm, reserve_agc_pg_ub, cost_pg_model, time_start_cold, qg_ub, reserve_agc_pg_lb, cost_pg_parameters, fuel_type, qg_lb, cost_start_hot, pg_lb, cost_start_cold, must_run, pg_ub, min_run, time_start_hot, up_time, time_start_warm, min_down, )
+function Generator(; service_on, pg, pgd_ub, bus, pgd_lb, name, max_run, qg, reserve_agc, status, pg_0, down_time, cost_start_warm, reserve_agc_pg_ub, cost_pg_model, time_start_cold, qg_ub, reserve_agc_pg_lb, cost_pg_parameters, fuel_type, qg_lb, cost_start_hot, pg_lb, cost_start_cold, index, must_run, pg_ub, min_run, time_start_hot, up_time, time_start_warm, min_down, )
+    Generator(service_on, pg, pgd_ub, bus, pgd_lb, name, max_run, qg, reserve_agc, status, pg_0, down_time, cost_start_warm, reserve_agc_pg_ub, cost_pg_model, time_start_cold, qg_ub, reserve_agc_pg_lb, cost_pg_parameters, fuel_type, qg_lb, cost_start_hot, pg_lb, cost_start_cold, index, must_run, pg_ub, min_run, time_start_hot, up_time, time_start_warm, min_down, )
 end
 
 # Constructor for demo purposes; non-functional.
@@ -141,9 +153,11 @@ function Generator(::Nothing)
         pgd_ub=1.1,
         bus=1,
         pgd_lb=1.1,
+        name="1",
         max_run=0,
         qg=1.1,
         reserve_agc=1,
+        status=1,
         pg_0=1,
         down_time=1.1,
         cost_start_warm=1,
@@ -158,6 +172,7 @@ function Generator(::Nothing)
         cost_start_hot=1,
         pg_lb=1,
         cost_start_cold=1,
+        index=1,
         must_run=1,
         pg_ub=2,
         min_run=0,
@@ -178,12 +193,16 @@ get_pgd_ub(value::Generator) = value.pgd_ub
 get_bus(value::Generator) = value.bus
 """Get Generator pgd_lb."""
 get_pgd_lb(value::Generator) = value.pgd_lb
+"""Get Generator name."""
+get_name(value::Generator) = value.name
 """Get Generator max_run."""
 get_max_run(value::Generator) = value.max_run
 """Get Generator qg."""
 get_qg(value::Generator) = value.qg
 """Get Generator reserve_agc."""
 get_reserve_agc(value::Generator) = value.reserve_agc
+"""Get Generator status."""
+get_status(value::Generator) = value.status
 """Get Generator pg_0."""
 get_pg_0(value::Generator) = value.pg_0
 """Get Generator down_time."""
@@ -212,6 +231,8 @@ get_cost_start_hot(value::Generator) = value.cost_start_hot
 get_pg_lb(value::Generator) = value.pg_lb
 """Get Generator cost_start_cold."""
 get_cost_start_cold(value::Generator) = value.cost_start_cold
+"""Get Generator index."""
+get_index(value::Generator) = value.index
 """Get Generator must_run."""
 get_must_run(value::Generator) = value.must_run
 """Get Generator pg_ub."""
@@ -237,12 +258,16 @@ set_pgd_ub!(value::Generator, val::Float64) = value.pgd_ub = val
 set_bus!(value::Generator, val::Int) = value.bus = val
 """Set Generator pgd_lb."""
 set_pgd_lb!(value::Generator, val::Float64) = value.pgd_lb = val
+"""Set Generator name."""
+set_name!(value::Generator, val::String) = value.name = val
 """Set Generator max_run."""
 set_max_run!(value::Generator, val::Float64) = value.max_run = val
 """Set Generator qg."""
 set_qg!(value::Generator, val::Float64) = value.qg = val
 """Set Generator reserve_agc."""
 set_reserve_agc!(value::Generator, val::Bool) = value.reserve_agc = val
+"""Set Generator status."""
+set_status!(value::Generator, val::Int) = value.status = val
 """Set Generator pg_0."""
 set_pg_0!(value::Generator, val::Float64) = value.pg_0 = val
 """Set Generator down_time."""
@@ -271,6 +296,8 @@ set_cost_start_hot!(value::Generator, val::Float64) = value.cost_start_hot = val
 set_pg_lb!(value::Generator, val::Float64) = value.pg_lb = val
 """Set Generator cost_start_cold."""
 set_cost_start_cold!(value::Generator, val::Float64) = value.cost_start_cold = val
+"""Set Generator index."""
+set_index!(value::Generator, val::Int) = value.index = val
 """Set Generator must_run."""
 set_must_run!(value::Generator, val::Int) = value.must_run = val
 """Set Generator pg_ub."""
